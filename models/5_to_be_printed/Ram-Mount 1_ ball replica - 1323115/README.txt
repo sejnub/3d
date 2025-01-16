@@ -1,1 +1,0 @@
-Ram-Mount 1" ball replica by iClint on Thingiverse: https://www.thingiverse.com/thing:1323115

@@ -1,1 +1,0 @@
-Anycubic i3 Mega Hotbed Cable Cover by lordbbk on Thingiverse: https://www.thingiverse.com/thing:3363489

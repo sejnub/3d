@@ -1,0 +1,1 @@
+Sonoff Enclosure with Push Button and Strain Relief by dlipper on Thingiverse: https://www.thingiverse.com/thing:2706968
