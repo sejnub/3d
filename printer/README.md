@@ -87,7 +87,6 @@ V1
 
 #### 5.1.1. Bambu Studio / Initial Layer: height and width
 
-
 - ILH := Quality / Layer height / Initial layer height
   - Orig: 0.2 mm
 

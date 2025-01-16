@@ -1,6 +1,5 @@
 # Klingen
 
-
 ## Arten
 
 - Schaber
@@ -24,7 +23,6 @@
 
 - <https://www.amazon.de/dp/B08CDHG7NM/ref=sspa_dk_detail_3?pd_rd_i=B08CDHRYR5&pd_rd_w=xrvKp&content-id=amzn1.sym.6ffc9ff7-fa31-49da-8594-196e74bcf61e&pf_rd_p=6ffc9ff7-fa31-49da-8594-196e74bcf61e&pf_rd_r=WM3DF0E680N8S6G195A7&pd_rd_wg=mAi3q&pd_rd_r=2816dca3-56b1-4ee1-8373-be98f7090ea7&s=industrial&sp_csd=d2lkZ2V0TmFtZT1zcF9kZXRhaWw&th=1>
 
-
 ## 1. Glasschaber-Klingen
 
 Diese Klingen gibt es durchaus auch als einseitig geschliffene Version
@@ -36,11 +34,9 @@ Basierend auf den Suchergebnissen gibt es mehrere Standardbreiten für Glasschab
 10 cm: Unger bietet Glasschaber und Ersatzklingen in dieser Breite an1.
 15 cm: Dies scheint eine sehr gängige Breite zu sein. Unger und andere Hersteller bieten Glasschaber und Klingen in dieser Größe an.
 
-
-
-
 ## 2. Abbrechklingen
 
+```email
 On 2025-01-15 11:55, Friedrich Weitzel wrote:
 > Guten Tag,
 >
@@ -92,3 +88,4 @@ On 2025-01-15 11:55, Friedrich Weitzel wrote:
 >
 > USt/VAT IdNr.: DE 133/ 5812/ 4371
 >
+```
