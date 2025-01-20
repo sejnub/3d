@@ -2,6 +2,7 @@
 
 - [1. Anycubic Mega S](#1-anycubic-mega-s)
   - [1.1. Marlin Firmware](#11-marlin-firmware)
+  - [Filament Sensor](#filament-sensor)
   - [1.2. Checklist](#12-checklist)
   - [1.3. OctoPrint](#13-octoprint)
     - [1.3.1. Octolapse](#131-octolapse)
@@ -24,6 +25,12 @@
 - <https://github.com/knutwurst/Marlin-2-0-x-Anycubic-i3-MEGA-S>
 
 - <https://github.com/knutwurst/Marlin-2-0-x-Anycubic-i3-MEGA-S/wiki/Set-new-print-bed-size>
+
+### Filament Sensor
+
+Repair filament sensor for Anycubic Mega S
+
+- <https://www.youtube.com/watch?v=SrNKF6XjOZc&ab_channel=Creative3DPrinting>
 
 ### 1.2. Checklist
 
