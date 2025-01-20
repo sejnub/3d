@@ -1,25 +1,31 @@
-# Anycubic Mega S
+# 3D Printers
 
-- [1. Marlin Firmware](#1-marlin-firmware)
-- [2. Checklist](#2-checklist)
-- [3. Octoprint](#3-octoprint)
-  - [3.1. Octolapse](#31-octolapse)
-- [4. Bed Levelling](#4-bed-levelling)
-- [5. Bed adhesion](#5-bed-adhesion)
-  - [5.1. My tries](#51-my-tries)
-    - [5.1.1. Bambu Studio / Initial Layer: height and width](#511-bambu-studio--initial-layer-height-and-width)
-  - [5.2. General advice from Perplexity](#52-general-advice-from-perplexity)
-  - [5.3. Z-Offset](#53-z-offset)
-- [6. Temp](#6-temp)
-- [7. ETX](#7-etx)
+- [1. Anycubic Mega S](#1-anycubic-mega-s)
+  - [1.1. Marlin Firmware](#11-marlin-firmware)
+  - [1.2. Checklist](#12-checklist)
+  - [1.3. OctoPrint](#13-octoprint)
+    - [1.3.1. Octolapse](#131-octolapse)
+  - [1.4. Bed Levelling](#14-bed-levelling)
+  - [1.5. Bed adhesion](#15-bed-adhesion)
+    - [1.5.1. My tries](#151-my-tries)
+      - [1.5.1.1. Bambu Studio / Initial Layer: height and width](#1511-bambu-studio--initial-layer-height-and-width)
+    - [1.5.2. General advice from Perplexity](#152-general-advice-from-perplexity)
+    - [1.5.3. Z-Offset](#153-z-offset)
+  - [1.6. Temp](#16-temp)
+- [2. Other Printers](#2-other-printers)
+  - [2.1. Models](#21-models)
+    - [2.1.1. Sovol SV06 ACE](#211-sovol-sv06-ace)
+  - [2.2. ETX](#22-etx)
 
-## 1. Marlin Firmware
+## 1. Anycubic Mega S
+
+### 1.1. Marlin Firmware
 
 - <https://github.com/knutwurst/Marlin-2-0-x-Anycubic-i3-MEGA-S>
 
 - <https://github.com/knutwurst/Marlin-2-0-x-Anycubic-i3-MEGA-S/wiki/Set-new-print-bed-size>
 
-## 2. Checklist
+### 1.2. Checklist
 
 V1
 
@@ -56,9 +62,9 @@ V1
   - Watch first layer
   - Fine tune Camera focus
 
-## 3. Octoprint
+### 1.3. OctoPrint
 
-### 3.1. Octolapse
+#### 1.3.1. Octolapse
 
 - [Octolapse](https://all3dp.com/2/octoprint-timelapse-how-to-find-the-best-octolapse-settings/)
 
@@ -70,22 +76,22 @@ V1
     - Stream
       - <rtsp://admin:admin-password@192.168.1.96:554/h264Preview_01_main>
 
-- In slicer settings, I selected the slicer-option which contained the slicer that bambu slicer was forked from
+- In slicer settings, I selected the slicer-option which contained the slicer that Bambu slicer was forked from
 
 - No extruding after first (or second?) layer
-  - Question: my printer stopped extruding while printing with octolapse turned on
+  - Question: my printer stopped extruding while printing with Octolapse turned on
   - Answer: Firmware settings: In Octolapse, edit your printer profile and set "G90/G91 Influences Extruder" to "True" under Firmware Settings5.
 
-## 4. Bed Levelling
+### 1.4. Bed Levelling
 
 - [Perfektes Bett-Leveling beim Anycubic i3 Mega](https://cool-web.de/3d-druck/anycubic-i3-mega-bett-leveling.htm)
 - [5 squares with 0.2mm height for bed leveling test](https://www.thingiverse.com/thing:2780118)
 
-## 5. Bed adhesion
+### 1.5. Bed adhesion
 
-### 5.1. My tries
+#### 1.5.1. My tries
 
-#### 5.1.1. Bambu Studio / Initial Layer: height and width
+##### 1.5.1.1. Bambu Studio / Initial Layer: height and width
 
 - ILH := Quality / Layer height / Initial layer height
   - Orig: 0.2 mm
@@ -100,10 +106,10 @@ V1
     - ILH: 0.3 mm
     - ILW: orig == 0.42mm
 
-### 5.2. General advice from Perplexity
+#### 1.5.2. General advice from Perplexity
 
 user
-are there settings in bambu studio that can help to reduce bed adhesion?
+are there settings in Bambu studio that can help to reduce bed adhesion?
 
 assistant
 In Bambu Studio, or any similar 3D printing software, managing bed adhesion can be crucial for successful prints. Here are a few settings and tips you can adjust in Bambu Studio to reduce bed adhesion if necessary:
@@ -124,12 +130,12 @@ In Bambu Studio, or any similar 3D printing software, managing bed adhesion can 
 
 Remember to make adjustments gradually and test frequently to find the optimal settings for your specific printer and material combination.
 
-### 5.3. Z-Offset
+#### 1.5.3. Z-Offset
 
 - <https://forum.bambulab.com/t/how-to-do-multi-z-offset-settings-for-filaments-bed-plates/50794>
 - <https://makerworld.com/de/models/19385#profileId-21308>
 
-## 6. Temp
+### 1.6. Temp
 
 ;Profil Homepage: https://github.com/NilsRo/Cura_Anycubic_MegaS_Profile
 
@@ -181,4 +187,10 @@ G1 E-2 F500                                ; Retract a little
 G1 X50 F500                                ; wipe away from the filament line
 G1 X100 F9000                              ; Quickly wipe away from the filament line
 
-## 7. ETX
+## 2. Other Printers
+
+### 2.1. Models
+
+#### 2.1.1. Sovol SV06 ACE
+
+### 2.2. ETX
