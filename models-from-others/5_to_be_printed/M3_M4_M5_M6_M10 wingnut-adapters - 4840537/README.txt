@@ -1,1 +1,0 @@
-M3/M4/M5/M6/M10 wingnut-adapters by -3Duard- on Thingiverse: https://www.thingiverse.com/thing:4840537

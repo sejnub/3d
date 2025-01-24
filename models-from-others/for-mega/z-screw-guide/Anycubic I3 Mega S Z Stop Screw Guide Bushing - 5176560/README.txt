@@ -1,0 +1,1 @@
+Anycubic I3 Mega S Z Stop Screw Guide Bushing by Brewmiester3504 on Thingiverse: https://www.thingiverse.com/thing:5176560

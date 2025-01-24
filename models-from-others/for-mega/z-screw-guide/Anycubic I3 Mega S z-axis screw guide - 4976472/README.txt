@@ -1,0 +1,1 @@
+Anycubic I3 Mega S z-axis screw guide by TheOldy on Thingiverse: https://www.thingiverse.com/thing:4976472
