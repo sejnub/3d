@@ -9,8 +9,8 @@
 
 ```gcode
 ; hb begin instructions to use the mesh
-M501
-M420 S1 
+M501 ; hb load all saved settings from eeprom
+M420 S1 ; hb switch bed levelling on
 ; hb end instructions to use the mesh
 ```
   
