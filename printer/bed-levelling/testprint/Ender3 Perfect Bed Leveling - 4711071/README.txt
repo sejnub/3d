@@ -1,1 +1,0 @@
-Ender3 Perfect Bed Leveling by thanapolboss on Thingiverse: https://www.thingiverse.com/thing:4711071
