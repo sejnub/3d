@@ -20,6 +20,26 @@
 
 ## 1. Other Printer Models than Mega S
 
-### 1.1. Sovol SV06 ACE
+### 1.1. Kobra 2 XXX
+
+Anycubic decided to choose the closed source path with the Kobra 2 Pro/Plus/Max models now.
+Means, there isn't even a possibility to connect to the machine locally as these machines don't offer an e.g. USB-C port for doing so and the WiFi only connects to their own servers.
+
+- die meisten nicht mehr octoprint kompatibel
+
+### 1.2. Sovol SV06 ACE
+
+- negativ
+  - small
+
+- Features
+  - 279,00 €
+  - Klipper
+  - Max. Geschwindigkeit 600 mm/s
+  - Vollautomatische Nivellierung
+  - Echtzeitüberwachung und -steuerung, unterstützt Zeitraffer
+  - Druckgröße: 220 x 220 x 250 mm
+  - OTA-Updates mit einem Klick
+
 
 ## 2. ETX
