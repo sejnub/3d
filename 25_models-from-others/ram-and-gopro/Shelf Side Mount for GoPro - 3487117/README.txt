@@ -1,1 +1,0 @@
-Shelf Side Mount for GoPro by TheLodrik on Thingiverse: https://www.thingiverse.com/thing:3487117
