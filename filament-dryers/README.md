@@ -1,3 +1,10 @@
+
+- Ninja AF100EU
+  - <https://www.ninjakitchen.de/produkte/ninja-heissluftfritteuse-af100eu-zidAF100EU>
+  - <https://www.youtube.com/watch?v=u6RWsOP8BM0&ab_channel=SamHillier>
+  - <https://www.kleinanzeigen.de/s-anzeige/heissluftfritteuse-ninja-af100eu-grau/2984935105-86-5244>
+
+
 - Sunlu S1 plus
   - <https://www.sunlu.com/de-de/products/sunlu-s1-and-s1-plus-filament-dryer-keeping-filament-dry-during-3d-printing?srsltid=AfmBOopiiZory43F960w76f-d8v2u5cShw1nHLG_M_ED2kh8jRzquJWw>
 
