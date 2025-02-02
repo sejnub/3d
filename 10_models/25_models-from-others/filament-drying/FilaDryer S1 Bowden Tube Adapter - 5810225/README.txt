@@ -1,0 +1,1 @@
+FilaDryer S1 Bowden Tube Adapter by ddspringle on Thingiverse: https://www.thingiverse.com/thing:5810225
