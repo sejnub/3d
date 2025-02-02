@@ -3,6 +3,10 @@
 
 ## Manual Mesh
 
+- Via Marlin LCD Menu
+  - <https://www.youtube.com/shorts/1-UEWbcggMo>
+  - <https://www.youtube.com/watch?v=B_rkGoc3aTE&ab_channel=iTryTec>
+
 > Entered the GCode
 
 ### gcode 2
