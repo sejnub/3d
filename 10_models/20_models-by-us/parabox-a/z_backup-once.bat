@@ -4,11 +4,33 @@
 
 setlocal EnableDelayedExpansion
 
+:::::::::::::::::::::::::::::::::::
+:: Begin of CONSTANT Definitions ::
+:::::::::::::::::::::::::::::::::::
+
 :: Debug setting (set to "true" for debug output)
 set "DEBUG=false"
 
 :: Define the origin file name
-set "origin=parabox-a.FCStd"
+set "origin=dummy.txt"
+
+:: Minimum bytes that must be saved by ZIP compression to keep the ZIP file
+:: Example: 1'048'576 or 1,048,576 or 1.048.576 (all mean 1MB)
+set "MIN_ZIP_SAVINGS=2'000'000"
+
+:::::::::::::::::::::::::::::::::
+:: End of CONSTANT Definitions ::
+:::::::::::::::::::::::::::::::::
+
+:: Keep only digits from MIN_ZIP_SAVINGS
+set "MIN_ZIP_SAVINGS_CLEAN=!MIN_ZIP_SAVINGS!"
+:: Remove all non-digit characters one by one
+set "MIN_ZIP_SAVINGS_CLEAN=!MIN_ZIP_SAVINGS_CLEAN:'=!"
+set "MIN_ZIP_SAVINGS_CLEAN=!MIN_ZIP_SAVINGS_CLEAN:,=!"
+set "MIN_ZIP_SAVINGS_CLEAN=!MIN_ZIP_SAVINGS_CLEAN:.=!"
+set "MIN_ZIP_SAVINGS_CLEAN=!MIN_ZIP_SAVINGS_CLEAN: =!"
+set "MIN_ZIP_SAVINGS_CLEAN=!MIN_ZIP_SAVINGS_CLEAN:_=!"
+set "MIN_ZIP_SAVINGS_CLEAN=!MIN_ZIP_SAVINGS_CLEAN:-=!"
 
 :: Get command line parameter
 set "param=%~1"
@@ -258,16 +280,30 @@ if "!is_loop_mode!"=="1" (
         if "%DEBUG%"=="true" echo Debug: ZIP creation failed with errorlevel %errorlevel%
     ) else (
         echo ZIP archive created: %new_filename%.zip
-        :: Delete the backup file after successful ZIP creation
-        if "%DEBUG%"=="true" echo Debug: Attempting to delete "%CD%\%new_filename%"
-        del "%new_filename%" 1>nul 2>nul
-        if errorlevel 1 (
-            if "%DEBUG%"=="true" echo Debug: Delete failed with errorlevel %errorlevel%
+        :: Compare file sizes to check if compression saved enough space
+        for %%A in ("%new_filename%") do set "original_size=%%~zA"
+        for %%A in ("%new_filename%.zip") do set "zip_size=%%~zA"
+        set /a "saved_space=original_size-zip_size"
+        
+        if !saved_space! GEQ !MIN_ZIP_SAVINGS_CLEAN! (
+            :: Compression saved significant space, delete the backup file
+            if "%DEBUG%"=="true" echo Debug: ZIP saved !saved_space! bytes, keeping ZIP file
+            if "%DEBUG%"=="true" echo Debug: Attempting to delete "%CD%\%new_filename%"
+            del "%new_filename%" 1>nul 2>nul
+            if errorlevel 1 (
+                if "%DEBUG%"=="true" echo Debug: Delete failed with errorlevel %errorlevel%
+            ) else (
+                echo Deleted intermediate backup file: %new_filename%
+            )
         ) else (
-            echo Deleted intermediate backup file: %new_filename%
+            :: Compression didn't save enough space, keep original and delete ZIP
+            if "%DEBUG%"=="true" echo Debug: ZIP only saved !saved_space! bytes, keeping original file
+            del "%new_filename%.zip" 1>nul 2>nul
+            echo Keeping uncompressed backup due to insufficient space savings: %new_filename%
         )
     )
 )
+
 exit /b 0
 
 :end_script

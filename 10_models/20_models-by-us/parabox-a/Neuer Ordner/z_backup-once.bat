@@ -4,14 +4,33 @@
 
 setlocal EnableDelayedExpansion
 
+:::::::::::::::::::::::::::::::::::
+:: Begin of CONSTANT Definitions ::
+:::::::::::::::::::::::::::::::::::
+
 :: Debug setting (set to "true" for debug output)
 set "DEBUG=false"
 
 :: Define the origin file name
 set "origin=dummy.txt"
 
-:: Minimum bytes that must be saved by ZIP compression to keep the ZIP file (1MB = 1048576 bytes)
-set "MIN_ZIP_SAVINGS=10"
+:: Minimum bytes that must be saved by ZIP compression to keep the ZIP file
+:: Example: 1'048'576 or 1,048,576 or 1.048.576 (all mean 1MB)
+set "MIN_ZIP_SAVINGS=2'000'000"
+
+:::::::::::::::::::::::::::::::::
+:: End of CONSTANT Definitions ::
+:::::::::::::::::::::::::::::::::
+
+:: Keep only digits from MIN_ZIP_SAVINGS
+set "MIN_ZIP_SAVINGS_CLEAN=!MIN_ZIP_SAVINGS!"
+:: Remove all non-digit characters one by one
+set "MIN_ZIP_SAVINGS_CLEAN=!MIN_ZIP_SAVINGS_CLEAN:'=!"
+set "MIN_ZIP_SAVINGS_CLEAN=!MIN_ZIP_SAVINGS_CLEAN:,=!"
+set "MIN_ZIP_SAVINGS_CLEAN=!MIN_ZIP_SAVINGS_CLEAN:.=!"
+set "MIN_ZIP_SAVINGS_CLEAN=!MIN_ZIP_SAVINGS_CLEAN: =!"
+set "MIN_ZIP_SAVINGS_CLEAN=!MIN_ZIP_SAVINGS_CLEAN:_=!"
+set "MIN_ZIP_SAVINGS_CLEAN=!MIN_ZIP_SAVINGS_CLEAN:-=!"
 
 :: Get command line parameter
 set "param=%~1"
@@ -266,7 +285,7 @@ if "!is_loop_mode!"=="1" (
         for %%A in ("%new_filename%.zip") do set "zip_size=%%~zA"
         set /a "saved_space=original_size-zip_size"
         
-        if !saved_space! GEQ !MIN_ZIP_SAVINGS! (
+        if !saved_space! GEQ !MIN_ZIP_SAVINGS_CLEAN! (
             :: Compression saved significant space, delete the backup file
             if "%DEBUG%"=="true" echo Debug: ZIP saved !saved_space! bytes, keeping ZIP file
             if "%DEBUG%"=="true" echo Debug: Attempting to delete "%CD%\%new_filename%"
