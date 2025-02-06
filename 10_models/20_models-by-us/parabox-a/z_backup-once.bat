@@ -8,10 +8,7 @@ setlocal EnableDelayedExpansion
 set "DEBUG=false"
 
 :: Define the origin file name
-set "origin=dummy.txt"
-
-:: Minimum bytes that must be saved by ZIP compression to keep the ZIP file (1MB = 1048576 bytes)
-set "MIN_ZIP_SAVINGS=10"
+set "origin=parabox-a.FCStd"
 
 :: Get command line parameter
 set "param=%~1"
@@ -261,30 +258,16 @@ if "!is_loop_mode!"=="1" (
         if "%DEBUG%"=="true" echo Debug: ZIP creation failed with errorlevel %errorlevel%
     ) else (
         echo ZIP archive created: %new_filename%.zip
-        :: Compare file sizes to check if compression saved enough space
-        for %%A in ("%new_filename%") do set "original_size=%%~zA"
-        for %%A in ("%new_filename%.zip") do set "zip_size=%%~zA"
-        set /a "saved_space=original_size-zip_size"
-        
-        if !saved_space! GEQ !MIN_ZIP_SAVINGS! (
-            :: Compression saved significant space, delete the backup file
-            if "%DEBUG%"=="true" echo Debug: ZIP saved !saved_space! bytes, keeping ZIP file
-            if "%DEBUG%"=="true" echo Debug: Attempting to delete "%CD%\%new_filename%"
-            del "%new_filename%" 1>nul 2>nul
-            if errorlevel 1 (
-                if "%DEBUG%"=="true" echo Debug: Delete failed with errorlevel %errorlevel%
-            ) else (
-                echo Deleted intermediate backup file: %new_filename%
-            )
+        :: Delete the backup file after successful ZIP creation
+        if "%DEBUG%"=="true" echo Debug: Attempting to delete "%CD%\%new_filename%"
+        del "%new_filename%" 1>nul 2>nul
+        if errorlevel 1 (
+            if "%DEBUG%"=="true" echo Debug: Delete failed with errorlevel %errorlevel%
         ) else (
-            :: Compression didn't save enough space, keep original and delete ZIP
-            if "%DEBUG%"=="true" echo Debug: ZIP only saved !saved_space! bytes, keeping original file
-            del "%new_filename%.zip" 1>nul 2>nul
-            echo Keeping uncompressed backup due to insufficient space savings: %new_filename%
+            echo Deleted intermediate backup file: %new_filename%
         )
     )
 )
-
 exit /b 0
 
 :end_script
