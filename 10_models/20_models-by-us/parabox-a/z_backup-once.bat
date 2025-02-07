@@ -12,7 +12,7 @@ setlocal EnableDelayedExpansion
 set "DEBUG=false"
 
 :: Define the origin file name
-set "origin=dummy.txt"
+set "origin=parabox-a.FCStd"
 
 :: Minimum bytes that must be saved by ZIP compression to keep the ZIP file
 :: Example: 1'048'576 or 1,048,576 or 1.048.576 (all mean 1MB)
