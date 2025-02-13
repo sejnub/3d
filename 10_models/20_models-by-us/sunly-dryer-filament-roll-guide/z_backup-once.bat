@@ -11,8 +11,49 @@ setlocal EnableDelayedExpansion
 :: Debug setting (set to "true" for debug output)
 set "DEBUG=false"
 
-:: Define the origin file name
-set "origin=sunly-dryer-filament-roll-guide.FCStd"
+:: Debug the incoming parameter exactly as received
+if "%DEBUG%"=="true" (
+    echo Raw param1: '[%1]'
+    echo Unquoted param1: '[%~1]'
+    echo Full path param1: '[%~f1]'
+    echo Drive param1: '[%~d1]'
+    echo Path param1: '[%~p1]'
+    echo Name param1: '[%~n1]'
+    echo Extension param1: '[%~x1]'
+    pause
+)
+
+:: Rest of your existing debug output
+if "%DEBUG%"=="true" (
+    echo param1: '%~1'
+    echo param2: '%~2'
+    timeout /t 5 >nul
+)
+
+:: Check if only 'l' parameter is given
+if /I "%~1"=="l" (
+    echo Error: Cannot use 'l' parameter without specifying a file
+    echo Usage: '%~nx0 path_to_file [l]'
+    timeout /t 5 >nul
+    exit /b 1
+)
+
+:: Remove the hardcoded origin definition and handle CLI parameter
+if "%~1"=="" (
+    echo Error: Please provide a path as the first parameter
+    echo Usage: '%~nx0 path_to_file [l]'
+    timeout /t 5 >nul
+    exit /b 1
+)
+
+:: For debugging
+if "%DEBUG%"=="true" (
+    echo Debug: Setting origin from parameter: '%~1'
+    pause
+)
+
+:: Just use the parameter as-is, without prepending current directory
+set "origin=%~1"
 
 :: Minimum bytes that must be saved by ZIP compression to keep the ZIP file
 :: Example: 1'048'576 or 1,048,576 or 1.048.576 (all mean 1MB)
@@ -32,8 +73,8 @@ set "MIN_ZIP_SAVINGS_CLEAN=!MIN_ZIP_SAVINGS_CLEAN: =!"
 set "MIN_ZIP_SAVINGS_CLEAN=!MIN_ZIP_SAVINGS_CLEAN:_=!"
 set "MIN_ZIP_SAVINGS_CLEAN=!MIN_ZIP_SAVINGS_CLEAN:-=!"
 
-:: Get command line parameter
-set "param=%~1"
+:: Get command line parameter for loop mode
+set "param=%~2"
 
 :: Initialize last size
 set "last_size=0"
@@ -43,11 +84,26 @@ goto :init
 :get_wmic_timestamp
 :: Get timestamp using wmic datafile
 :: %~1 = file path, returns timestamp in YYYY-MM-DD_HHMMSS format
+
 set "wmic_file=%~f1"
+if "%DEBUG%"=="true" (
+    echo Debug: Full path resolved to: '%wmic_file%'
+    pause
+)
+
+:: Escape the path properly for WMIC
 set "wmic_file=!wmic_file:\=\\!"
-if "%DEBUG%"=="true" echo Debug: Getting WMIC timestamp for "!wmic_file!"
-for /f "skip=1 tokens=2 delims==" %%a in ('wmic datafile where "name='!wmic_file!'" get lastmodified /value') do (
+if "%DEBUG%"=="true" (
+    echo Debug: WMIC command will be: wmic datafile where "Name='!wmic_file!'" get LastModified /value
+    pause
+)
+
+for /f "skip=1 tokens=2 delims==" %%a in ('wmic datafile where "Name='!wmic_file!'" get LastModified /value 2^>nul') do (
     set "wmic_time=%%a"
+    if "%DEBUG%"=="true" (
+        echo Debug: Got WMIC time: '!wmic_time!'
+        pause
+    )
     set "year=!wmic_time:~0,4!"
     set "month=!wmic_time:~4,2!"
     set "day=!wmic_time:~6,2!"
@@ -56,23 +112,26 @@ for /f "skip=1 tokens=2 delims==" %%a in ('wmic datafile where "name='!wmic_file
     set "second=!wmic_time:~12,2!"
 )
 set "formatted_date=!year!-!month!-!day!_!hour!!minute!!second!"
-if "%DEBUG%"=="true" echo Debug: WMIC formatted date is "!formatted_date!"
+if "%DEBUG%"=="true" (
+    echo Debug: Final formatted date is: '!formatted_date!'
+    pause
+)
 exit /b
 
 :init
 :: Enable debug output
 if "%DEBUG%"=="true" (
-    echo Debug: Current directory is %CD%
-    echo Debug: Looking for file %origin%
+    echo Debug: Current directory is '%CD%'
+    echo Debug: Looking for file '%origin%'
     if exist "%origin%" (
         echo Debug: File exists
-        echo Debug: Full path is "%CD%\%origin%"
+        echo Debug: Full path is '%CD%\%origin%'
     ) else (
         echo Debug: File does not exist
     )
 ) else (
     if not exist "%origin%" (
-        echo Error: File "%origin%" not found
+        echo Error: File '%origin%' not found
         exit /b 1
     )
 )
@@ -112,11 +171,15 @@ if /I "%param%"=="l" (
 )
 
 :watch_mode
-echo Starting watch mode. Press Q to exit.
+echo Starting watch mode.
 
 :: Make initial backup
+echo.
+echo Performing initial backup...
 call :perform_backup
-echo Watching for changes in %origin%
+echo.
+echo Watching for changes in '%origin%'
+echo Press 'Q' to exit
 
 :: Store initial timestamp and size
 if "%DEBUG%"=="true" echo Debug: Starting initial timestamp check
@@ -155,7 +218,7 @@ if "%DEBUG%"=="true" echo Debug: Wait cycle completed
 :: Check if file still exists
 if "%DEBUG%"=="true" echo Debug: Checking if file exists
 if not exist "%origin%" (
-    echo Error: File "%origin%" no longer exists. Exiting watch mode...
+    echo Error: File '%origin%' no longer exists. Exiting watch mode...
     goto :end_script
 )
 if "%DEBUG%"=="true" echo Debug: File check completed
@@ -191,14 +254,17 @@ if not "!last_size!"=="!current_size!" (
 
 if "!changed!"=="1" (
     echo.
-    echo Change detected in %origin% [!change_type!]
+    echo.
+    echo Change detected in '%origin%' [!change_type!]
     call :perform_backup
     for %%A in ("%origin%") do (
         call :get_wmic_timestamp "%%~fA"
         set "last_modified=!formatted_date!"
         set "last_size=%%~zA"
     )
-    echo Watching for changes in %origin%. Press Q to exit
+    echo.
+    echo Watching for changes in '%origin%'
+    echo Press 'Q' to exit
 )
 if "%DEBUG%"=="true" (
     echo Debug: Comparison completed
@@ -218,13 +284,14 @@ if /I "%param%"=="l" set "is_loop_mode=1"
 
 :: Check if file exists
 if not exist "%origin%" (
-    echo Error: File "%origin%" not found
+    echo Error: File '%origin%' not found
+    timeout /t 5 >nul
     exit /b 1
 )
 
 :: Get file's last modified date/time using wmic
 if "%DEBUG%"=="true" echo Debug: Getting file's last modified timestamp
-call :get_wmic_timestamp "%CD%\%origin%"
+call :get_wmic_timestamp "%origin%"
 
 :: Split filename and extension
 if "%DEBUG%"=="true" echo Debug: Splitting filename
@@ -232,22 +299,22 @@ for %%F in ("%origin%") do (
     set "basename=%%~nF"
     set "extension=%%~xF"
     if "%DEBUG%"=="true" (
-        echo Debug: Basename is !basename!
-        echo Debug: Extension is !extension!
-        echo Debug: Full path is "%%~fF"
+        echo Debug: Basename is '!basename!'
+        echo Debug: Extension is '!extension!'
+        echo Debug: Full path is '%%~fF'
     )
 )
 
 :: Create the new filename with timestamp, preserving extension
 set "new_filename=%basename%.%formatted_date%%extension%"
 if "%DEBUG%"=="true" (
-    echo Debug: New filename will be "%new_filename%"
-    echo Debug: Will create file in directory "%CD%"
+    echo Debug: New filename will be '%new_filename%'
+    echo Debug: Will create file in directory '%CD%'
 )
 
 :: Check if target file exists
 if exist "%new_filename%" (
-    echo Note: Existing file will be overwritten: %new_filename%
+    echo Note: Existing file will be overwritten: '%new_filename%'
 )
 
 :: Copy the file
@@ -255,31 +322,31 @@ if "%DEBUG%"=="true" echo Debug: Attempting to copy "%CD%\%origin%" to "%CD%\%ne
 copy "%origin%" "%new_filename%" 1>nul
 if errorlevel 1 (
     echo Error copying the file
-    if "%DEBUG%"=="true" echo Debug: Copy command failed with errorlevel %errorlevel%
+    if "%DEBUG%"=="true" echo Debug: Copy command failed with errorlevel '%errorlevel%'
     exit /b 1
 ) else (
-    echo File copied successfully to: %new_filename%
+    echo File copied successfully to: '%new_filename%'
 )
 
 :: Only create ZIP archive in loop mode
 if "!is_loop_mode!"=="1" (
     if "%DEBUG%"=="true" (
         echo Debug: Creating ZIP archive
-        echo Debug: Source file for ZIP: "%CD%\%new_filename%"
-        echo Debug: Target ZIP file: "%CD%\%new_filename%.zip"
+        echo Debug: Source file for ZIP: '%CD%\%new_filename%'
+        echo Debug: Target ZIP file: '%CD%\%new_filename%.zip'
     )
     
     :: Check if ZIP file exists
     if exist "%new_filename%.zip" (
-        echo Note: Existing ZIP file will be overwritten: %new_filename%.zip
+        echo Note: Existing ZIP file will be overwritten: '%new_filename%.zip'
     )
     
     1>nul 2>nul powershell -Command "Write-Host 'Debug: PowerShell starting compression'; $ErrorActionPreference = 'Continue'; Try { Compress-Archive -Path '%CD%\%new_filename%' -DestinationPath '%CD%\%new_filename%.zip' -Force; Write-Host 'Debug: Compression completed successfully' } Catch { Write-Host 'Debug: PowerShell error: ' $_.Exception.Message }"
     if errorlevel 1 (
         echo Error creating ZIP archive
-        if "%DEBUG%"=="true" echo Debug: ZIP creation failed with errorlevel %errorlevel%
+        if "%DEBUG%"=="true" echo Debug: ZIP creation failed with errorlevel '%errorlevel%'
     ) else (
-        echo ZIP archive created: %new_filename%.zip
+        echo ZIP archive created: '%new_filename%.zip'
         :: Compare file sizes to check if compression saved enough space
         for %%A in ("%new_filename%") do set "original_size=%%~zA"
         for %%A in ("%new_filename%.zip") do set "zip_size=%%~zA"
@@ -287,19 +354,19 @@ if "!is_loop_mode!"=="1" (
         
         if !saved_space! GEQ !MIN_ZIP_SAVINGS_CLEAN! (
             :: Compression saved significant space, delete the backup file
-            if "%DEBUG%"=="true" echo Debug: ZIP saved !saved_space! bytes, keeping ZIP file
-            if "%DEBUG%"=="true" echo Debug: Attempting to delete "%CD%\%new_filename%"
+            if "%DEBUG%"=="true" echo Debug: ZIP saved '!saved_space!' bytes, keeping ZIP file
+            if "%DEBUG%"=="true" echo Debug: Attempting to delete '%CD%\%new_filename%'
             del "%new_filename%" 1>nul 2>nul
             if errorlevel 1 (
-                if "%DEBUG%"=="true" echo Debug: Delete failed with errorlevel %errorlevel%
+                if "%DEBUG%"=="true" echo Debug: Delete failed with errorlevel '%errorlevel%'
             ) else (
-                echo Deleted intermediate backup file: %new_filename%
+                echo Deleted intermediate backup file: '%new_filename%'
             )
         ) else (
             :: Compression didn't save enough space, keep original and delete ZIP
-            if "%DEBUG%"=="true" echo Debug: ZIP only saved !saved_space! bytes, keeping original file
+            if "%DEBUG%"=="true" echo Debug: ZIP only saved '!saved_space!' bytes, keeping original file
             del "%new_filename%.zip" 1>nul 2>nul
-            echo Keeping uncompressed backup due to insufficient space savings: %new_filename%
+            echo Deleting ZIP file and keeping uncompressed backup '%new_filename%' due to insufficient space savings.
         )
     )
 )
@@ -308,4 +375,7 @@ exit /b 0
 
 :end_script
 endlocal
+
+timeout /t 5 >nul
+
 exit /b 0 
