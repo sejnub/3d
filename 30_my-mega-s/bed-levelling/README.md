@@ -34,7 +34,7 @@ G29 S4 Z-0.08 ; Value changed at 2025-02-10
 ; hb end instructions to use the mesh
 ```
 
-### 2.2. Mesh von dritter Kalibrierung am 2025-02-18 13:19:22
+### 2.2. Mesh from third calibration on 2025-02-18 13:19:22
 
 Durchgeführt mit Folie vom doppelseitigen transparenten Klebeband. 
 Die Folie hat gemessene Dicke von 0,04mm.
@@ -56,7 +56,7 @@ Recv: X:2.00 Y:2.00 Z:20.42 E:-34.00 Count X:160 Y:160 Z:8000
 Recv: ok
 ```
 
-Mit Start Code `G29 S4 Z-0.0`:
+Mit Start Code `G29 S4 Z-0.0`, or in full:
 
 ```gcode
 G90 ; use absolute coordinates
@@ -87,7 +87,7 @@ G1 X105.0 E12.5 F1000
 G92 E0.0
 ```
 
-### 2.3. Mesh von zweiter Kalibrierung am 2025-02-08
+### 2.3. Mesh from second calibration on 2025-02-08
 
 ```gcode
 Send: G29 S0
@@ -139,7 +139,7 @@ With `G29 S4 Z-0.06` the print warped so I changed to
 G29 S4 Z-0.08
 ```
 
-### 2.4. Mesh von erster Kalibirerung am 2025-01-23
+### 2.4. Mesh from first calibration on  2025-01-23
 
 ```gcode
 Send: G29 S0
